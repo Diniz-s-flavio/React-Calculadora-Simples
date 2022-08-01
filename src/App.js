@@ -24,7 +24,7 @@ export default function App(){
 
   //Funções
   const addDigitoTela=(d)=>{
-    if((d== '+' || d== '-' || d== '*' || d== '/') && operacao){
+    if((d== '+' || d== '-' || d== '*' || d== '/') && operado){
       console.log("+-*/")
       setOperado(false)
       setValorTela(resultado+d)
@@ -47,16 +47,48 @@ export default function App(){
     return
   }
 
+  const Operacao=(oper)=>{
+    if(oper=='bs'){
+      let vtela=valorTela
+      vtela=vtela.substring(0,(vtela.length-1))
+      setValorTela(vtela)
+      setOperado(false)
+      return
+    }
+    try{
+      const r=eval(valorTela) //Cálculo
+      setAcumulador(r)
+      setResultado(r)
+      setOperado(true)
+    }catch{
+      setResultado('ERRO')
+    }
+  }
+
   //Estilos
+  const cssConteiner={
+    display:'flex',
+    justifyContent:'flex-start',
+    alignItems:'center',
+    flexDirection:'column',
+    width:300,
+    border:'1px solid #000'
+  }
+  const cssBotoes={
+    flexDirection:'row',
+    flexwrap:'wrap'
+
+  }
   const cssTela={
     display:'flex',
     paddingLeft:20,
     paddingRight:20,
-    justfyContent:'center',
+    justifyContent:'center',
     alignItems:'flex-start',
     backgroundColor:'#444',
     flexDirection:'column',
-    window:260
+    width:260,
+    height:100
   }
 
   const cssTelaOper={
@@ -68,12 +100,12 @@ export default function App(){
   const cssTelaRes={
     fontSize:50,
     color:'#fff',
-    height:20
+    height:50
   }
   const cssBtn={
     fontSize:30,
     height:75,
-    with:75,
+    width:75,
     padding: 20,
     backgroundColor: '#000',
     color:'#fff',
@@ -84,7 +116,35 @@ export default function App(){
 
   return(
     <>
-    
+      <div style={cssConteiner}>
+        <h3>Calculadora Matemática Simples</h3>
+        <div>
+        {Tela(valorTela,resultado)}
+        </div>
+        <div style={cssBotoes}>
+          {Btn('AC',limparMemoria)}
+          {Btn('(',()=>addDigitoTela('('))}
+          {Btn(')',()=>addDigitoTela(')'))}
+          {Btn('/',()=>addDigitoTela('/'))}
+          {Btn('7',()=>addDigitoTela('7'))}
+          {Btn('8',()=>addDigitoTela('8'))}
+          {Btn('9',()=>addDigitoTela('9'))}
+          {Btn('*',()=>addDigitoTela('*'))}
+          {Btn('4',()=>addDigitoTela('4'))}
+          {Btn('5',()=>addDigitoTela('5'))}
+          {Btn('6',()=>addDigitoTela('6'))}
+          {Btn('-',()=>addDigitoTela('-'))}
+          {Btn('1',()=>addDigitoTela('1'))}
+          {Btn('2',()=>addDigitoTela('2'))}
+          {Btn('3',()=>addDigitoTela('3'))}
+          {Btn('+',()=>addDigitoTela('+'))}
+          {Btn('0',()=>addDigitoTela('0'))}
+          {Btn(',',()=>addDigitoTela('.'))}
+          {Btn('<-',()=>Operacao('bs'))}
+          {Btn('=',()=>Operacao('='))}
+
+        </div>
+      </div>
     </>
   )
 }
